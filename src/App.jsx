@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
+import CardItem from "./CardItem";
 
 function App() {
   const [crew, setCrew] = useState([]);
 
   const getSpaceXData = () => {
     axios
-      .get("https://api.spacexdata.com/v4/crew")
+      .get("https://api.spacexta.com/v4/crew")
       .then((res) => {
         setCrew(res.data);
       })
@@ -34,24 +34,17 @@ function App() {
         <Typography>SpaceX launches</Typography>
       </Grid>
       <Grid item>
-        <button onClick={getSpaceXData}>Get Crew</button>
+        <Button onClick={getSpaceXData}>Get Crew</Button>
       </Grid>
 
       <Grid item>
-        {crew.map((el) => (
-          <div
-            key={el.id}
-            style={{ border: "solid 1px black", padding: ".5rem" }}
-          >
-            <a href={el.wikipedia} target="_blank">
-              <p>{el.name}</p>
-            </a>
-            <p>Agency: {el.agency}</p>
-            <img src={el.image} alt={el.name} style={{ width: "200px" }} />
-            <p>status : {el.status}</p>
-            <button>Show more</button>
-          </div>
-        ))}
+        <Grid container spacing={3}>
+          {crew.map((el) => (
+            <Grid item xs={4}>
+              <CardItem item={el} />
+            </Grid>
+          ))}
+        </Grid>
       </Grid>
     </Grid>
   );
