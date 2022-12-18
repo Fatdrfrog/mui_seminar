@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 
 import axios from "axios";
-import { Button, Grid } from "@mui/material";
-import CardItem from "./CardItem";
-import { CardSkeleton } from "./skeletons/CardSkeleton";
-import { ErrorPage } from "./ErrorPage";
+
+import { Grid } from "@mui/material";
+import { Outlet } from "react-router-dom";
+
+import { CardSkeleton } from "../skeletons/CardSkeleton";
+import { ErrorPage } from "../ErrorPage";
+import CardItem from "../CardItem";
 
 export const Crew = () => {
   const [isLoading, setLoading] = useState(false);
@@ -27,11 +30,15 @@ export const Crew = () => {
       });
   };
 
+  useEffect(() => {
+    getSpaceXData();
+  }, []);
+
   if (isLoading)
     return (
       <Grid container spacing={3}>
-        {[0, 1, 2, 3, 4, 5, 6, 7].map(() => (
-          <Grid item xs={4}>
+        {[0, 1, 2, 3, 4, 5, 6, 7].map((el) => (
+          <Grid key={el} item xs={4}>
             <CardSkeleton />
           </Grid>
         ))}
@@ -41,20 +48,15 @@ export const Crew = () => {
   if (isError) return <ErrorPage />;
 
   return (
-    <>
-      <Grid item>
-        <Button onClick={getSpaceXData}>Get Crew</Button>
+    <Grid item>
+      <Grid container spacing={3}>
+        {crew.map((el) => (
+          <Grid key={el.id} item xs={4}>
+            <CardItem item={el} />
+          </Grid>
+        ))}
       </Grid>
-
-      <Grid item>
-        <Grid container spacing={3}>
-          {crew.map((el) => (
-            <Grid item xs={4}>
-              <CardItem item={el} />
-            </Grid>
-          ))}
-        </Grid>
-      </Grid>
-    </>
+      <Outlet />
+    </Grid>
   );
 };

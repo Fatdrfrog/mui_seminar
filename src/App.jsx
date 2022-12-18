@@ -1,27 +1,34 @@
 import axios from "axios";
 import { Grid, Typography } from "@mui/material";
 
-import { Crew } from "./Crew";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
+
+import { Contents } from "./Contents";
+import { Crew } from "./components/Crew";
+import { DialogComponent } from "./UI/DialogComponent";
 
 function App() {
-  const getSpecificLaunch = () => {
-    axios
-      .get("https://api.spacexdata.com/v4/launches/5eb87d46ffd86e000604b388")
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   return (
-    <Grid container spacing={2} direction="column" p={3}>
-      <Grid item>
-        <Typography>SpaceX launches</Typography>
+    <Router>
+      <Grid container spacing={2} direction="column" p={3}>
+        <Grid item>
+          <Typography>SpaceX launches</Typography>
+        </Grid>
+
+        <Routes>
+          <Route path="/" element={<Contents />}>
+            <Route path="/crew" element={<Crew />}>
+              <Route path="/crew/:launchID" element={<DialogComponent />} />
+            </Route>
+          </Route>
+        </Routes>
       </Grid>
-      <Crew />
-    </Grid>
+    </Router>
   );
 }
 

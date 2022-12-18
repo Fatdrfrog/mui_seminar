@@ -6,6 +6,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Link } from "@mui/material";
+import { Link as LinkRouter } from "react-router-dom";
 
 export default function CardItem({ item }) {
   return (
@@ -22,13 +23,19 @@ export default function CardItem({ item }) {
             {item.name}
           </Typography>
         </Link>
-        <Typography variant="body2" color="text.secondary">
+        <div variant="body2" color="text.secondary">
           <Typography>{item.agency}</Typography>
           <Typography>{item.status}</Typography>
-        </Typography>
+        </div>
       </CardContent>
       <CardActions>
-        <Button size="small">Show More</Button>
+        <Button
+          size="small"
+          component={LinkRouter}
+          to={`/crew/${item.launches[0]}`}
+        >
+          Show More
+        </Button>
       </CardActions>
     </Card>
   );
